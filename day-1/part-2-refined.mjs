@@ -10,6 +10,15 @@ const strToNum = {
   seven: 7,
   eight: 8,
   nine: 9,
+  1: 1,
+  2: 2,
+  3: 3,
+  4: 4,
+  5: 5,
+  6: 6,
+  7: 7,
+  8: 8,
+  9: 9,
 };
 
 function getNums(line) {
@@ -26,17 +35,6 @@ function getNums(line) {
         // We don't do the full length because one number might end with the final letter of another, e.g. eighthree
         offset = idx + 1;
       }
-    }
-  }
-
-  for (const [idx, val] of line.split("").entries()) {
-    const num = +val;
-    if (!Number.isNaN(num)) {
-      nums.push({
-        line,
-        idx,
-        num: num,
-      });
     }
   }
 
