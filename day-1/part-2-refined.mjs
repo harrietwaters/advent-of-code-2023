@@ -39,10 +39,8 @@ function solveIt() {
   const sum = input
     // Remove remaining character
     .replace(/[a-z]/gm, "")
-    // Grab first and last digits
-    .replace(/(\d).*(\d)/gm, "$1$2")
-    // If there's only one digit, duplicate it
-    .replace(/^(\d)$/gm, "$1$1")
+    // Grab first and last digits or if there's only one then duplicate it
+    .replace(/(\d).*(\d)|(\d)/gm, "$1$2$3$3")
     .split("\n")
     // Sum it up, baby
     .reduce((acc, curr) => acc + Number(curr), 0);
