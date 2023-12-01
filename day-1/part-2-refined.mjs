@@ -1,56 +1,52 @@
 import { loadFile } from "../helpers/loadFile.mjs";
 
-const strToNum = {
-  one: 1,
-  two: 2,
-  three: 3,
-  four: 4,
-  five: 5,
-  six: 6,
-  seven: 7,
-  eight: 8,
-  nine: 9,
-  1: 1,
-  2: 2,
-  3: 3,
-  4: 4,
-  5: 5,
-  6: 6,
-  7: 7,
-  8: 8,
-  9: 9,
+const numbersThatCanTouch = {
+  oneight: "18",
+  twone: "21",
+  threeight: "38",
+  fiveight: "58",
+  sevenine: "79",
+  eightwo: "82",
+  eighthree: "83",
+  nineight: "98",
 };
 
-function getNums(line) {
-  const nums = [];
-  for (const strNum of Object.keys(strToNum)) {
-    let idx = -1;
-    let offset = 0;
-    while ((idx = line.indexOf(strNum, offset)) >= 0) {
-      if (idx >= 0) {
-        nums.push({
-          idx,
-          num: strToNum[strNum],
-        });
-        // We don't do the full length because one number might end with the final letter of another, e.g. eighthree
-        offset = idx + 1;
-      }
-    }
-  }
-
-  return nums.sort((a, b) => a.idx - b.idx);
-}
+const strToNum = {
+  one: "1",
+  two: "2",
+  three: "3",
+  four: "4",
+  five: "5",
+  six: "6",
+  seven: "7",
+  eight: "8",
+  nine: "9",
+};
 
 function solveIt() {
-  const input = loadFile("./day-1/day-1-input.txt");
+  let input = loadFile("./day-1/day-1-input.txt");
 
-  const lines = input.split("\n");
+  // Fix any string numbers that overlap
+  for (const [search, replace] of Object.entries(numbersThatCanTouch)) {
+    input = input.replace(new RegExp(search, "g"), replace);
+  }
+
+  // Turn all string numbers into number numbers
+  for (const [search, replace] of Object.entries(strToNum)) {
+    input = input.replace(new RegExp(search, "g"), replace);
+  }
+
+  // Get rid of the remaining strings
+  input = input.replace(/[a-z]/g, "");
+
+  const lines = input
+    .split("\n")
+    .map((line) => line.split("").map((str) => +str));
 
   let sum = 0;
-  for (const line of lines) {
-    const nums = getNums(line);
-    const first = nums[0].num;
-    const last = nums[nums.length - 1].num;
+  for (const nums of lines) {
+    const first = nums[0];
+    const last = nums[nums.length - 1];
     const value = +`${first}${last}`;
     sum += value;
   }
