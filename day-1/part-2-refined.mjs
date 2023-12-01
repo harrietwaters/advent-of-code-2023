@@ -36,20 +36,17 @@ function solveIt() {
     input = input.replace(new RegExp(search, "g"), replace);
   }
 
-  // Get rid of the remaining strings
-  input = input.replace(/[a-z]/g, "");
-
-  const lines = input
+  const sum = input
+    // Remove remaining character
+    .replace(/[a-z]/gm, "")
+    // Grab first and last digits
+    .replace(/(\d).*(\d)/gm, "$1$2")
+    // If there's only one digit, duplicate it
+    .replace(/^(\d)$/gm, "$1$1")
     .split("\n")
-    .map((line) => line.split("").map((str) => +str));
+    // Sum it up, baby
+    .reduce((acc, curr) => acc + Number(curr), 0);
 
-  let sum = 0;
-  for (const nums of lines) {
-    const first = nums[0];
-    const last = nums[nums.length - 1];
-    const value = +`${first}${last}`;
-    sum += value;
-  }
   console.log(sum);
 }
 
